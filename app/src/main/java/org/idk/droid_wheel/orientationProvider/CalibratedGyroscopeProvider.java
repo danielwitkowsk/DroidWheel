@@ -1,10 +1,13 @@
-package org.hitlabnz.sensor_fusion_demo.orientationProvider;
+package org.idk.droid_wheel.orientationProvider;
 
-import org.hitlabnz.sensor_fusion_demo.representation.Quaternion;
+import org.idk.droid_wheel.MainActivity;
+import org.idk.droid_wheel.representation.Quaternion;
 
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorManager;
+
+import java.nio.charset.StandardCharsets;
 
 /**
  * The orientation provider that delivers the relative orientation from the {@link Sensor#TYPE_GYROSCOPE
@@ -15,7 +18,6 @@ import android.hardware.SensorManager;
  * 
  */
 public class CalibratedGyroscopeProvider extends OrientationProvider {
-
     /**
      * Constant specifying the factor between a Nano-second and a second
      */
@@ -127,6 +129,14 @@ public class CalibratedGyroscopeProvider extends OrientationProvider {
                 }
             }
             timestamp = event.timestamp;
+            getEulerAngles(MainActivity.test);
+            MainActivity.degree=(MainActivity.test[0]+Math.PI)*(360/(2*Math.PI));
+            MainActivity.degree = (MainActivity.degree + MainActivity.offset)%360;
+            if (MainActivity.degree < 0) MainActivity.degree = 360 +MainActivity.degree;
+            MainActivity.img.setRotation(-(float)MainActivity.degree);
+            byte[] mess = (String.valueOf((int)MainActivity.degree)).getBytes(StandardCharsets.UTF_8);
+            MainActivity.client.send(mess);
+
         }
     }
 }

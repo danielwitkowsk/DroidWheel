@@ -1,4 +1,4 @@
-package org.hitlabnz.sensor_fusion_demo.representation;
+package org.idk.droid_wheel.representation;
 
 /**
  * Matrix math utilities. These methods operate on OpenGL ES format
@@ -132,45 +132,8 @@ public class Matrix {
         output[15] = lhs[3] * rhs[12] + lhs[7] * rhs[13] + lhs[11] * rhs[14] + lhs[15] * rhs[15];
     }
 
-    /**
-     * Multiply a 4 element vector by a 4x4 matrix and store the result in a 4
-     * element column vector. In matrix notation: result = lhs x rhs
-     * 
-     * The same float array may be passed for resultVec, lhsMat, and/or rhsVec.
-     * However, the resultVec element values are undefined if the resultVec
-     * elements overlap either the lhsMat or rhsVec elements.
-     * 
-     * @param resultVec The float array that holds the result vector.
-     * @param resultVecOffset The offset into the result array where the result
-     *            vector is stored.
-     * @param lhsMat The float array that holds the left-hand-side matrix.
-     * @param lhsMatOffset The offset into the lhs array where the lhs is stored
-     * @param rhsVec The float array that holds the right-hand-side vector.
-     * @param rhsVecOffset The offset into the rhs vector where the rhs vector
-     *            is stored.
-     * 
-     * @throws IllegalArgumentException if resultVec, lhsMat,
-     *             or rhsVec are null, or if resultVecOffset + 4 > resultVec.length
-     *             or lhsMatOffset + 16 > lhsMat.length or
-     *             rhsVecOffset + 4 > rhsVec.length.
-     */
-    /* public static void multiplyMV(float[] resultVec,
-     * int resultVecOffset, float[] lhsMat, int lhsMatOffset,
-     * float[] rhsVec, int rhsVecOffset){
-     * android.opengl.Matrix.multiplyMV(resultVec, resultVecOffset, lhsMat, lhsMatOffset, rhsVec, rhsVecOffset);
-     * } */
     public static void multiplyMV(float[] output, int outputOffset, float[] lhs, int lhsOffset, float[] rhs,
             int rhsOffset) {
-        /* wrong implementation (this is for row major matrices)
-         * output[outputOffset +0] = lhs[lhsOffset + 0] * rhs[rhsOffset + 0] + lhs[lhsOffset + 1] * rhs[rhsOffset + 1]
-         * + lhs[lhsOffset + 2] * rhs[rhsOffset + 2] + lhs[lhsOffset + 3] * rhs[rhsOffset + 3];
-         * output[outputOffset +1] = lhs[lhsOffset + 4] * rhs[rhsOffset + 0] + lhs[lhsOffset + 5] * rhs[rhsOffset + 1] +
-         * lhs[lhsOffset + 6] * rhs[rhsOffset + 2] + lhs[lhsOffset + 7] * rhs[rhsOffset + 3];
-         * output[outputOffset +2] = lhs[lhsOffset + 8] * rhs[rhsOffset + 0] + lhs[lhsOffset + 9] * rhs[rhsOffset + 1] +
-         * lhs[lhsOffset + 10] * rhs[rhsOffset + 2] + lhs[lhsOffset + 11] * rhs[rhsOffset + 3];
-         * output[outputOffset +3] = lhs[lhsOffset + 12] * rhs[rhsOffset + 0] + lhs[lhsOffset + 13] * rhs[rhsOffset + 1]
-         * + lhs[lhsOffset + 14] * rhs[rhsOffset + 2] + lhs[lhsOffset + 15] * rhs[rhsOffset + 3]; */
-        // correct implementation for column major matrices (which is for OpenGL)
         output[outputOffset + 0] = lhs[lhsOffset + 0] * rhs[rhsOffset + 0] + lhs[lhsOffset + 4] * rhs[rhsOffset + 1]
                 + lhs[lhsOffset + 8] * rhs[rhsOffset + 2] + lhs[lhsOffset + 12] * rhs[rhsOffset + 3];
         output[outputOffset + 1] = lhs[lhsOffset + 1] * rhs[rhsOffset + 0] + lhs[lhsOffset + 5] * rhs[rhsOffset + 1]
@@ -179,7 +142,6 @@ public class Matrix {
                 + lhs[lhsOffset + 10] * rhs[rhsOffset + 2] + lhs[lhsOffset + 14] * rhs[rhsOffset + 3];
         output[outputOffset + 3] = lhs[lhsOffset + 3] * rhs[rhsOffset + 0] + lhs[lhsOffset + 7] * rhs[rhsOffset + 1]
                 + lhs[lhsOffset + 11] * rhs[rhsOffset + 2] + lhs[lhsOffset + 15] * rhs[rhsOffset + 3];
-
     }
 
     public static void multiplyMV(float[] outputV, float[] inputM, float[] inputV) {
@@ -195,15 +157,6 @@ public class Matrix {
         outputV[2] = inputM[2] * inputV[0] + inputM[6] * inputV[1] + inputM[10] * inputV[2] + inputM[14] * w;
     }
 
-    /**
-     * Transposes a 4 x 4 matrix.
-     * 
-     * @param mTrans the array that holds the output inverted matrix
-     * @param mTransOffset an offset into mInv where the inverted matrix is
-     *            stored.
-     * @param m the input array
-     * @param mOffset an offset into m where the matrix is stored.
-     */
     public static void transposeM(float[] mTrans, int mTransOffset, float[] m, int mOffset) {
         for (int i = 0; i < 4; i++) {
             int mBase = i * 4 + mOffset;
@@ -213,21 +166,7 @@ public class Matrix {
             mTrans[i + 12 + mTransOffset] = m[mBase + 3];
         }
     }
-
-    /**
-     * Inverts a 4 x 4 matrix.
-     * 
-     * @param mInv the array that holds the output inverted matrix
-     * @param mInvOffset an offset into mInv where the inverted matrix is
-     *            stored.
-     * @param m the input array
-     * @param mOffset an offset into m where the matrix is stored.
-     * @return true if the matrix could be inverted, false if it could not.
-     */
     public static boolean invertM(float[] mInv, int mInvOffset, float[] m, int mOffset) {
-        // Invert a 4 x 4 matrix using Cramer's Rule
-
-        // transpose matrix
         final float src0 = m[mOffset + 0];
         final float src4 = m[mOffset + 1];
         final float src8 = m[mOffset + 2];
@@ -247,8 +186,6 @@ public class Matrix {
         final float src7 = m[mOffset + 13];
         final float src11 = m[mOffset + 14];
         final float src15 = m[mOffset + 15];
-
-        // calculate pairs for first 8 elements (cofactors)
         final float atmp0 = src10 * src15;
         final float atmp1 = src11 * src14;
         final float atmp2 = src9 * src15;
@@ -262,7 +199,6 @@ public class Matrix {
         final float atmp10 = src8 * src13;
         final float atmp11 = src9 * src12;
 
-        // calculate first 8 elements (cofactors)
         final float dst0 = (atmp0 * src5 + atmp3 * src6 + atmp4 * src7) - (atmp1 * src5 + atmp2 * src6 + atmp5 * src7);
         final float dst1 = (atmp1 * src4 + atmp6 * src6 + atmp9 * src7) - (atmp0 * src4 + atmp7 * src6 + atmp8 * src7);
         final float dst2 = (atmp2 * src4 + atmp7 * src5 + atmp10 * src7)
@@ -276,7 +212,6 @@ public class Matrix {
         final float dst7 = (atmp4 * src0 + atmp9 * src1 + atmp10 * src2)
                 - (atmp5 * src0 + atmp8 * src1 + atmp11 * src2);
 
-        // calculate pairs for second 8 elements (cofactors)
         final float btmp0 = src2 * src7;
         final float btmp1 = src3 * src6;
         final float btmp2 = src1 * src7;
@@ -290,7 +225,6 @@ public class Matrix {
         final float btmp10 = src0 * src5;
         final float btmp11 = src1 * src4;
 
-        // calculate second 8 elements (cofactors)
         final float dst8 = (btmp0 * src13 + btmp3 * src14 + btmp4 * src15)
                 - (btmp1 * src13 + btmp2 * src14 + btmp5 * src15);
         final float dst9 = (btmp1 * src12 + btmp6 * src14 + btmp9 * src15)
@@ -308,14 +242,12 @@ public class Matrix {
         final float dst15 = (btmp10 * src10 + btmp4 * src8 + btmp9 * src9)
                 - (btmp8 * src9 + btmp11 * src10 + btmp5 * src8);
 
-        // calculate determinant
         final float det = src0 * dst0 + src1 * dst1 + src2 * dst2 + src3 * dst3;
 
         if (det == 0.0f) {
             return false;
         }
 
-        // calculate matrix inverse
         final float invdet = 1.0f / det;
         mInv[mInvOffset] = dst0 * invdet;
         mInv[1 + mInvOffset] = dst1 * invdet;
@@ -339,19 +271,6 @@ public class Matrix {
 
         return true;
     }
-
-    /**
-     * Computes an orthographic projection matrix.
-     * 
-     * @param m returns the result
-     * @param mOffset
-     * @param left
-     * @param right
-     * @param bottom
-     * @param top
-     * @param near
-     * @param far
-     */
 
     public static void orthoM(float[] m, int mOffset, float left, float right, float bottom, float top, float near,
             float far) {
@@ -392,19 +311,6 @@ public class Matrix {
         m[mOffset + 11] = 0.0f;
     }
 
-    /**
-     * Define a projection matrix in terms of six clip planes
-     * 
-     * @param m the float array that holds the perspective matrix
-     * @param offset the offset into float array m where the perspective
-     *            matrix data is written
-     * @param left
-     * @param right
-     * @param bottom
-     * @param top
-     * @param near
-     * @param far
-     */
 
     public static void frustumM(float[] m, int offset, float left, float right, float bottom, float top, float near,
             float far) {
@@ -450,18 +356,6 @@ public class Matrix {
         m[offset + 15] = 0.0f;
     }
 
-    /**
-     * Define a projection matrix in terms of a field of view angle, an
-     * aspect ratio, and z clip planes
-     * 
-     * @param m the float array that holds the perspective matrix
-     * @param offset the offset into float array m where the perspective
-     *            matrix data is written
-     * @param fovy field of view in y direction, in degrees
-     * @param aspect width to height aspect ratio of the viewport
-     * @param zNear
-     * @param zFar
-     */
     public static void perspectiveM(float[] m, int offset, float fovy, float aspect, float zNear, float zFar) {
         float f = 1.0f / (float) Math.tan(fovy * (Math.PI / 360.0));
         float rangeReciprocal = 1.0f / (zNear - zFar);
@@ -487,24 +381,10 @@ public class Matrix {
         m[offset + 15] = 0.0f;
     }
 
-    /**
-     * Computes the length of a vector
-     * 
-     * @param x x coordinate of a vector
-     * @param y y coordinate of a vector
-     * @param z z coordinate of a vector
-     * @return the length of a vector
-     */
     public static float length(float x, float y, float z) {
         return (float) Math.sqrt(x * x + y * y + z * z);
     }
 
-    /**
-     * Sets matrix m to the identity matrix.
-     * 
-     * @param sm returns the result
-     * @param smOffset index into sm where the result matrix starts
-     */
     public static void setIdentityM(float[] sm, int smOffset) {
         for (int i = 0; i < 16; i++) {
             sm[smOffset + i] = 0;
@@ -514,17 +394,6 @@ public class Matrix {
         }
     }
 
-    /**
-     * Scales matrix m by x, y, and z, putting the result in sm
-     * 
-     * @param sm returns the result
-     * @param smOffset index into sm where the result matrix starts
-     * @param m source matrix
-     * @param mOffset index into m where the source matrix starts
-     * @param x scale factor x
-     * @param y scale factor y
-     * @param z scale factor z
-     */
     public static void scaleM(float[] sm, int smOffset, float[] m, int mOffset, float x, float y, float z) {
         for (int i = 0; i < 4; i++) {
             int smi = smOffset + i;
@@ -536,15 +405,6 @@ public class Matrix {
         }
     }
 
-    /**
-     * Scales matrix m in place by sx, sy, and sz
-     * 
-     * @param m matrix to scale
-     * @param mOffset index into m where the matrix starts
-     * @param x scale factor x
-     * @param y scale factor y
-     * @param z scale factor z
-     */
     public static void scaleM(float[] m, int mOffset, float x, float y, float z) {
         for (int i = 0; i < 4; i++) {
             int mi = mOffset + i;
@@ -554,17 +414,6 @@ public class Matrix {
         }
     }
 
-    /**
-     * Translates matrix m by x, y, and z, putting the result in tm
-     * 
-     * @param tm returns the result
-     * @param tmOffset index into sm where the result matrix starts
-     * @param m source matrix
-     * @param mOffset index into m where the source matrix starts
-     * @param x translation factor x
-     * @param y translation factor y
-     * @param z translation factor z
-     */
     public static void translateM(float[] tm, int tmOffset, float[] m, int mOffset, float x, float y, float z) {
         for (int i = 0; i < 12; i++) {
             tm[tmOffset + i] = m[mOffset + i];
@@ -576,15 +425,6 @@ public class Matrix {
         }
     }
 
-    /**
-     * Translates matrix m by x, y, and z in place.
-     * 
-     * @param m matrix
-     * @param mOffset index into m where the matrix starts
-     * @param x translation factor x
-     * @param y translation factor y
-     * @param z translation factor z
-     */
     public static void translateM(float[] m, int mOffset, float x, float y, float z) {
         for (int i = 0; i < 4; i++) {
             int mi = mOffset + i;
@@ -592,18 +432,6 @@ public class Matrix {
         }
     }
 
-    /**
-     * Rotates matrix m by angle a (in degrees) around the axis (x, y, z)
-     * 
-     * @param rm returns the result
-     * @param rmOffset index into rm where the result matrix starts
-     * @param m source matrix
-     * @param mOffset index into m where the source matrix starts
-     * @param a angle to rotate in degrees
-     * @param x scale factor x
-     * @param y scale factor y
-     * @param z scale factor z
-     */
     public static void rotateM(float[] rm, int rmOffset, float[] m, int mOffset, float a, float x, float y, float z) {
         synchronized (TEMP_MATRIX_ARRAY) {
             setRotateM(TEMP_MATRIX_ARRAY, 0, a, x, y, z);
@@ -611,17 +439,6 @@ public class Matrix {
         }
     }
 
-    /**
-     * Rotates matrix m in place by angle a (in degrees)
-     * around the axis (x, y, z)
-     * 
-     * @param m source matrix
-     * @param mOffset index into m where the matrix starts
-     * @param a angle to rotate in degrees
-     * @param x scale factor x
-     * @param y scale factor y
-     * @param z scale factor z
-     */
     public static void rotateM(float[] m, int mOffset, float a, float x, float y, float z) {
         synchronized (TEMP_MATRIX_ARRAY) {
             setRotateM(TEMP_MATRIX_ARRAY, 0, a, x, y, z);
@@ -630,16 +447,6 @@ public class Matrix {
         }
     }
 
-    /**
-     * Rotates matrix m by angle a (in degrees) around the axis (x, y, z)
-     * 
-     * @param rm returns the result
-     * @param rmOffset index into rm where the result matrix starts
-     * @param a angle to rotate in degrees
-     * @param x scale factor x
-     * @param y scale factor y
-     * @param z scale factor z
-     */
     public static void setRotateM(float[] rm, int rmOffset, float a, float x, float y, float z) {
         rm[rmOffset + 3] = 0;
         rm[rmOffset + 7] = 0;
@@ -708,15 +515,6 @@ public class Matrix {
         }
     }
 
-    /**
-     * Converts Euler angles to a rotation matrix
-     * 
-     * @param rm returns the result
-     * @param rmOffset index into rm where the result matrix starts
-     * @param x angle of rotation, in degrees
-     * @param y angle of rotation, in degrees
-     * @param z angle of rotation, in degrees
-     */
     public static void setRotateEulerM(float[] rm, int rmOffset, float x, float y, float z) {
         x *= (float) (Math.PI / 180.0f);
         y *= (float) (Math.PI / 180.0f);

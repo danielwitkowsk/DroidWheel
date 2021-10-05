@@ -1,4 +1,4 @@
-package org.hitlabnz.sensor_fusion_demo.representation;
+package org.idk.droid_wheel.representation;
 
 /**
  * The Quaternion class. A Quaternion is a four-dimensional vector that is used to represent rotations of a rigid body
@@ -109,12 +109,6 @@ public class Quaternion extends Vector4f {
         }
     }
 
-    /**
-     * Multiply this quaternion by the input quaternion and store the result in the out quaternion
-     * 
-     * @param input
-     * @param output
-     */
     public void multiplyByQuat(Quaternion input) {
         this.dirty = true;
         if(tmpQuaternion == null) tmpQuaternion = new Quaternion();

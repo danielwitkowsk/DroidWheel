@@ -1,8 +1,12 @@
-package org.hitlabnz.sensor_fusion_demo.orientationProvider;
+package org.idk.droid_wheel.orientationProvider;
 
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorManager;
+
+import org.idk.droid_wheel.MainActivity;
+
+import java.nio.charset.StandardCharsets;
 
 /**
  * The orientation provider that delivers the current orientation from the {@link Sensor#TYPE_ROTATION_VECTOR Android
@@ -45,5 +49,12 @@ public class RotationVectorProvider extends OrientationProvider {
             SensorManager.getQuaternionFromVector(temporaryQuaternion, event.values);
             currentOrientationQuaternion.setXYZW(temporaryQuaternion[1], temporaryQuaternion[2], temporaryQuaternion[3], -temporaryQuaternion[0]);
         }
+        getEulerAngles(MainActivity.test);
+        MainActivity.degree=(MainActivity.test[0]+Math.PI)*(360/(2*Math.PI));
+        MainActivity.degree = (MainActivity.degree + MainActivity.offset)%360;
+        if (MainActivity.degree < 0) MainActivity.degree = 360 +MainActivity.degree;
+        MainActivity.img.setRotation(-(float)MainActivity.degree);
+        byte[] mess = (String.valueOf((int)MainActivity.degree)).getBytes(StandardCharsets.UTF_8);
+        MainActivity.client.send(mess);
     }
 }

@@ -32,7 +32,7 @@ A short summary can also be found in this `Stackoverflow answer <http://stackove
 Installation
 ============
 
-This project is an Gradle-based Android Studio project. It is also published in the `Google Play Store <https://play.google.com/store/apps/details?id=org.hitlabnz.sensor_fusion_demo>`_, if you just want to try it out. 
+This project is an Gradle-based Android Studio project. It is also published in the `Google Play Store <https://play.google.com/store/apps/details?id=droid_wheel>`_, if you just want to try it out.
 
 Contribute
 ==========

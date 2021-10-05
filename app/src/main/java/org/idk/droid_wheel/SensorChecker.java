@@ -1,4 +1,4 @@
-package org.hitlabnz.sensor_fusion_demo;
+package org.idk.droid_wheel;
 
 public interface SensorChecker {
 
