@@ -7,3 +7,6 @@ Missing funtions:
 - Various controll buttons, sliders (some of them hopefully utilizing sensor readings)
 - Displaying parts of a Windows screen in center instead of wheel
 - Proper settings menu (including dark mode toggle, changing size of an central image)
+
+Instructions: https://github.com/danielwitkowsk/DroidWheel_releases
+Downloads: https://github.com/danielwitkowsk/DroidWheel_releases/releases
