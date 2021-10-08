@@ -9,4 +9,5 @@ Missing funtions:
 - Proper settings menu (including dark mode toggle, changing size of an central image)
 
 Instructions: https://github.com/danielwitkowsk/DroidWheel_releases
+
 Downloads: https://github.com/danielwitkowsk/DroidWheel_releases/releases
