@@ -1,73 +1,52 @@
 package org.idk.droid_wheel.orientationProvider;
+/*
+Copyright (c) 2012-2021 Scott Chacon and others
 
+Permission is hereby granted, free of charge, to any person obtaining
+a copy of this software and associated documentation files (the
+"Software"), to deal in the Software without restriction, including
+without limitation the rights to use, copy, modify, merge, publish,
+distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to
+the following conditions:
+
+The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorManager;
-
 import org.idk.droid_wheel.MainActivity;
-
-import java.nio.charset.StandardCharsets;
-
-/**
- * The orientation provider that delivers the current orientation from the {@link Sensor#TYPE_GRAVITY
- * Gravity} and {@link Sensor#TYPE_MAGNETIC_FIELD Compass}.
- * 
- * @author Alexander Pacha
- * 
- */
 public class GravityCompassProvider extends OrientationProvider {
-
-    /**
-     * Compass values
-     */
     final private float[] magnitudeValues = new float[3];
-
-    /**
-     * Gravity values
-     */
     final private float[] gravityValues = new float[3];
-
-    /**
-     * Inclination values
-     */
     float[] inclinationValues = new float[16];
-
-    /**
-     * Initialises a new GravityCompassProvider
-     * 
-     * @param sensorManager The android sensor manager
-     */
     public GravityCompassProvider(SensorManager sensorManager) {
         super(sensorManager);
-
-        //Add the compass and the gravity sensor
         sensorList.add(sensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY));
         sensorList.add(sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD));
     }
-
     @Override
     public void onSensorChanged(SensorEvent event) {
-
-        // we received a sensor event. it is a good practice to check
-        // that we received the proper event
         if (event.sensor.getType() == Sensor.TYPE_MAGNETIC_FIELD) {
             System.arraycopy(event.values, 0, magnitudeValues, 0, magnitudeValues.length);
         } else if (event.sensor.getType() == Sensor.TYPE_GRAVITY) {
             System.arraycopy(event.values, 0, gravityValues, 0, gravityValues.length);
         }
-
         if (magnitudeValues != null && gravityValues != null) {
-            // Fuse gravity-sensor (virtual sensor) with compass
             SensorManager.getRotationMatrix(currentOrientationRotationMatrix.matrix, inclinationValues, gravityValues, magnitudeValues);
-            // Transform rotation matrix to quaternion
             currentOrientationQuaternion.setRowMajor(currentOrientationRotationMatrix.matrix);
         }
-        getEulerAngles(MainActivity.test);
-        MainActivity.degree=(MainActivity.test[0]+Math.PI)*(360/(2*Math.PI));
-        MainActivity.degree = (MainActivity.degree + MainActivity.offset)%360;
-        if (MainActivity.degree < 0) MainActivity.degree = 360 +MainActivity.degree;
-        MainActivity.img.setRotation(-(float)MainActivity.degree);
-        byte[] mess = (String.valueOf((int)MainActivity.degree)).getBytes(StandardCharsets.UTF_8);
-        MainActivity.client.send(mess);
+        float[] values=new float[3];
+        getEulerAngles(values);
+        MainActivity.client.pre_send(values);
     }
 }

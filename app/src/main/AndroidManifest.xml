@@ -6,7 +6,8 @@
         android:allowBackup="false"
         android:icon="@drawable/ic_launcher"
         android:label="Droid Wheel"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        android:testOnly="false">
     <activity
         android:name="org.idk.droid_wheel.MainActivity"
         android:label="DroidWheel">
@@ -16,6 +17,11 @@
             <category android:name="android.intent.category.LAUNCHER" />
         </intent-filter>
     </activity>
+        <activity
+            android:name="org.idk.droid_wheel.postStart"
+            android:label="DroidWheel">
+
+        </activity>
 </application>
 
 </manifest>

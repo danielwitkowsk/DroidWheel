@@ -1,55 +1,25 @@
 package org.idk.droid_wheel.representation;
 
-/**
- * The Quaternion class. A Quaternion is a four-dimensional vector that is used to represent rotations of a rigid body
- * in the 3D space. It is very similar to a rotation vector; it contains an angle, encoded into the w component
- * and three components to describe the rotation-axis (encoded into x, y, z).
- * 
- * <p>
- * Quaternions allow for elegant descriptions of 3D rotations, interpolations as well as extrapolations and compared to
- * Euler angles, they don't suffer from gimbal lock. Interpolations between two Quaternions are called SLERP (Spherical
- * Linear Interpolation).
- * </p>
- * 
- * <p>
- * This class also contains the representation of the same rotation as a Quaternion and 4x4-Rotation-Matrix.
- * </p>
- * 
- * @author Leigh Beattie, Alexander Pacha
- * 
- */
+
 public class Quaternion extends Vector4f {
 
-    /**
-     * Rotation matrix that contains the same rotation as the Quaternion in a 4x4 homogenised rotation matrix.
-     * Remember that for performance reasons, this matrix is only updated, when it is accessed and not on every change
-     * of the quaternion-values.
-     */
+
     private MatrixF4x4 matrix;
 
-    /**
-     * This variable is used to synchronise the rotation matrix with the current quaternion values. If someone has
-     * changed the
-     * quaternion numbers then the matrix will need to be updated. To save on processing we only really want to update
-     * the matrix when someone wants to fetch it, instead of whenever someone sets a quaternion value.
-     */
+
     private boolean dirty = false;
 
     private Vector4f tmpVector = new Vector4f();
     private Quaternion tmpQuaternion;
 
-    /**
-     * Creates a new Quaternion object and initialises it with the identity Quaternion
-     */
+
     public Quaternion() {
         super();
         matrix = new MatrixF4x4();
         loadIdentityQuat();
     }
 
-    /**
-     * Normalise this Quaternion into a unity Quaternion.
-     */
+
     public void normalise() {
         this.dirty = true;
         float mag = (float) Math.sqrt(points[3] * points[3] + points[0] * points[0] + points[1] * points[1] + points[2]
@@ -65,22 +35,13 @@ public class Quaternion extends Vector4f {
         normalise();
     }
 
-    /**
-     * Copies the values from the given quaternion to this one
-     * 
-     * @param quat The quaternion to copy from
-     */
+
     public void set(Quaternion quat) {
         this.dirty = true;
         copyVec4(quat);
     }
 
-    /**
-     * Multiply this quaternion by the input quaternion and store the result in the out quaternion
-     * 
-     * @param input
-     * @param output
-     */
+
     public void multiplyByQuat(Quaternion input, Quaternion output) {
 
         if (input != output) {
@@ -117,32 +78,19 @@ public class Quaternion extends Vector4f {
         this.copyVec4(tmpQuaternion);
     }
 
-    /**
-     * Multiplies this Quaternion with a scalar
-     * 
-     * @param scalar the value that the vector should be multiplied with
-     */
+
     public void multiplyByScalar(float scalar) {
         this.dirty = true;
         multiplyByScalar(scalar);
     }
 
-    /**
-     * Add a quaternion to this quaternion
-     * 
-     * @param input The quaternion that you want to add to this one
-     */
+
     public void addQuat(Quaternion input) {
         this.dirty = true;
         addQuat(input, this);
     }
 
-    /**
-     * Add this quaternion and another quaternion together and store the result in the output quaternion
-     * 
-     * @param input The quaternion you want added to this quaternion
-     * @param output The quaternion you want to store the output in.
-     */
+
     public void addQuat(Quaternion input, Quaternion output) {
         output.setX(getX() + input.getX());
         output.setY(getY() + input.getY());
@@ -150,22 +98,13 @@ public class Quaternion extends Vector4f {
         output.setW(getW() + input.getW());
     }
 
-    /**
-     * Subtract a quaternion to this quaternion
-     * 
-     * @param input The quaternion that you want to subtracted from this one
-     */
+
     public void subQuat(Quaternion input) {
         this.dirty = true;
         subQuat(input, this);
     }
 
-    /**
-     * Subtract another quaternion from this quaternion and store the result in the output quaternion
-     * 
-     * @param input The quaternion you want subtracted from this quaternion
-     * @param output The quaternion you want to store the output in.
-     */
+
     public void subQuat(Quaternion input, Quaternion output) {
         output.setX(getX() - input.getX());
         output.setY(getY() - input.getY());
@@ -173,10 +112,7 @@ public class Quaternion extends Vector4f {
         output.setW(getW() - input.getW());
     }
 
-    /**
-     * Converts this Quaternion into the Rotation-Matrix representation which can be accessed by
-     * {@link Quaternion#getMatrix4x4 getMatrix4x4}
-     */
+
     private void convertQuatToMatrix() {
         float x = points[0];
         float y = points[1];
@@ -201,11 +137,7 @@ public class Quaternion extends Vector4f {
         matrix.setW3(1);
     }
 
-    /**
-     * Get an axis angle representation of this quaternion.
-     * 
-     * @param output Vector4f axis angle.
-     */
+
     public void toAxisAngle(Vector4f output) {
         if (getW() > 1) {
             normalise(); // if w>1 acos and sqrt will produce errors, this cant happen if quaternion is normalised
@@ -233,11 +165,7 @@ public class Quaternion extends Vector4f {
         output.points[3] = angle;
     }
 
-    /**
-     * Returns the heading, attitude and bank of this quaternion as euler angles in the double array respectively
-     * 
-     * @return An array of size 3 containing the euler angles for this quaternion
-     */
+
     public double[] toEulerAngles() {
         double[] ret = new double[3];
 
@@ -250,9 +178,7 @@ public class Quaternion extends Vector4f {
         return ret;
     }
 
-    /**
-     * Sets the quaternion to an identity quaternion of 0,0,0,1.
-     */
+
     public void loadIdentityQuat() {
         this.dirty = true;
         setX(0);
@@ -266,11 +192,7 @@ public class Quaternion extends Vector4f {
         return "{X: " + getX() + ", Y:" + getY() + ", Z:" + getZ() + ", W:" + getW() + "}";
     }
 
-    /**
-     * This is an internal method used to build a quaternion from a rotation matrix and then sets the current quaternion
-     * from that matrix.
-     * 
-     */
+
     private void generateQuaternionFromMatrix() {
 
         float qx;
@@ -340,12 +262,7 @@ public class Quaternion extends Vector4f {
         setW(qw);
     }
 
-    /**
-     * You can set the values for this quaternion based off a rotation matrix. If the matrix you supply is not a
-     * rotation matrix this will fail. You MUST provide a 4x4 matrix.
-     * 
-     * @param matrix A column major rotation matrix
-     */
+
     public void setColumnMajor(float[] matrix) {
 
         this.matrix.setMatrix(matrix);
@@ -354,12 +271,7 @@ public class Quaternion extends Vector4f {
         generateQuaternionFromMatrix();
     }
 
-    /**
-     * You can set the values for this quaternion based off a rotation matrix. If the matrix you supply is not a
-     * rotation matrix this will fail.
-     * 
-     * @param matrix A column major rotation matrix
-     */
+
     public void setRowMajor(float[] matrix) {
 
         this.matrix.setMatrix(matrix);
@@ -368,13 +280,7 @@ public class Quaternion extends Vector4f {
         generateQuaternionFromMatrix();
     }
 
-    /**
-     * Set this quaternion from axis angle values. All rotations are in degrees.
-     * 
-     * @param azimuth The rotation around the z axis
-     * @param pitch The rotation around the y axis
-     * @param roll The rotation around the x axis
-     */
+
     public void setEulerAngle(float azimuth, float pitch, float roll) {
 
         double heading = Math.toRadians(roll);
@@ -397,12 +303,7 @@ public class Quaternion extends Vector4f {
         dirty = true;
     }
 
-    /**
-     * Rotation is in degrees. Set this quaternion from the supplied axis angle.
-     * 
-     * @param vec The vector of rotation
-     * @param rot The angle of rotation around that vector in degrees.
-     */
+
     public void setAxisAngle(Vector3f vec, float rot) {
         double s = Math.sin(Math.toRadians(rot / 2));
         setX(vec.getX() * (float) s);
@@ -423,9 +324,7 @@ public class Quaternion extends Vector4f {
         dirty = true;
     }
 
-    /**
-     * @return Returns this Quaternion in the Rotation Matrix representation
-     */
+
     public MatrixF4x4 getMatrix4x4() {
         //toMatrixColMajor();
         if (dirty) {
@@ -439,15 +338,7 @@ public class Quaternion extends Vector4f {
         copyFromV3f(vec, w);
     }
 
-    /**
-     * Get a linear interpolation between this quaternion and the input quaternion, storing the result in the output
-     * quaternion.
-     * 
-     * @param input The quaternion to be slerped with this quaternion.
-     * @param output The quaternion to store the result in.
-     * @param t The ratio between the two quaternions where 0 <= t <= 1.0 . Increase value of t will bring rotation
-     *            closer to the input quaternion.
-     */
+
     public void slerp(Quaternion input, Quaternion output, float t) {
         // Calculate angle between them.
         //double cosHalftheta = this.dotProduct(input);
@@ -465,23 +356,7 @@ public class Quaternion extends Vector4f {
         } else {
             bufferQuat = input;
         }
-        /**
-         * if(dot < 0.95f){
-         * double angle = Math.acos(dot);
-         * double ratioA = Math.sin((1 - t) * angle);
-         * double ratioB = Math.sin(t * angle);
-         * double divisor = Math.sin(angle);
-         * 
-         * //Calculate Quaternion
-         * output.setW((float)((this.getW() * ratioA + input.getW() * ratioB)/divisor));
-         * output.setX((float)((this.getX() * ratioA + input.getX() * ratioB)/divisor));
-         * output.setY((float)((this.getY() * ratioA + input.getY() * ratioB)/divisor));
-         * output.setZ((float)((this.getZ() * ratioA + input.getZ() * ratioB)/divisor));
-         * }
-         * else{
-         * lerp(input, output, t);
-         * }
-         */
+
         // if qa=qb or qa=-qb then theta = 0 and we can return qa
         if (Math.abs(cosHalftheta) >= 1.0) {
             output.points[0] = (this.points[0]);

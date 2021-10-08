@@ -1,115 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/startLayout"
-        android:orientation="vertical"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center">
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:gravity="center"
-        >
+        android:text="Input IP from Windows application:">
+    </TextView>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="Input IP from Windows application:">
-
-        </TextView>
-        <EditText
-            android:id="@+id/ipaddr"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="20sp"
-            android:hint="IP address"
-            android:inputType="number"
-            android:digits="0123456789.">
-        </EditText>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Choose port(e.g. 8888):">
-        </TextView>
-        <EditText
-            android:id="@+id/port"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="20sp"
-            android:hint="Port"
-            android:inputType="number"
-            android:digits="0123456789.">
-        </EditText>
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="OK"
-            android:id="@+id/submit"
-            >
-        </Button>
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/secondLayout"
+    <EditText
+        android:id="@+id/ipaddr"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:gravity="center"
-        >
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Current sensor:"></TextView>
-        <TextView
-            android:id="@+id/curr_sens"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Current sensor: "></TextView>
-        <ImageView
-            android:id="@+id/wheel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/wheel"
-            android:gravity="center"
-            android:adjustViewBounds="true"
-            android:scaleType="centerCrop"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20sp"
+        android:digits="0123456789."
+        android:hint="IP address"
+        android:inputType="number">
+    </EditText>
 
-            />
-        <Button
-            android:id="@+id/test_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Choose sensor"/>
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <Button
-                android:id="@+id/less10"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="-10"></Button>
-            <Button
-                android:id="@+id/less1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="-1"></Button>
-            <Button
-                android:id="@+id/more1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="+1"></Button>
-            <Button
-                android:id="@+id/more10"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="+10"></Button>
+    <TextView
+        android:id="@+id/ipaddrtext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Choose port(e.g. 8888):">
+    </TextView>
 
-        </LinearLayout>
+    <EditText
+        android:id="@+id/port"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20sp"
+        android:digits="0123456789."
+        android:hint="Port"
+        android:inputType="number">
+    </EditText>
 
+    <Button
+        android:id="@+id/submit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="OK">
+    </Button>
 
-    </LinearLayout>
-
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

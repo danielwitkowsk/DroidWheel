@@ -28,9 +28,6 @@ android {
         abortOnError false
     }
 
-    packagingOptions {
-        exclude 'README.txt'
-    }
 }
 
 dependencies {
@@ -52,4 +49,5 @@ dependencies {
     androidTestImplementation ('com.android.support.test:rules:1.0.2') {
         exclude group: 'com.android.support', module: 'support-annotations'
     }
+    implementation 'com.google.android.material:material:1.0.0'
 }

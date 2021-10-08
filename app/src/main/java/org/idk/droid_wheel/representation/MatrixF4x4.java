@@ -2,21 +2,7 @@ package org.idk.droid_wheel.representation;
 
 import android.util.Log;
 
-/**
- * The Class MatrixF4x4.
- *
- * Internal the matrix is structured as
- *
- * [ x0 , y0 , z0 , w0 ] [ x1 , y1 , z1 , w1 ] [ x2 , y2 , z2 , w2 ] [ x3 , y3 , z3 , w3 ]
- *
- * it is recommend that when setting the matrix values individually that you use the set{x,#} methods, where 'x' is
- * either x, y, z or w and # is either 0, 1, 2 or 3, setY1 for example. The reason you should use these functions is
- * because it will map directly to that part of the matrix regardless of whether or not the internal matrix is column
- * major or not. If the matrix is either or length 9 or 16 it will be able to determine if it can set the value or not.
- * If the matrix is of size 9 but you set say w2, the value will not be set and the set method will return without any
- * error.
- *
- */
+
 public class MatrixF4x4 {
 
     public static final int[] matIndCol9_3x3 = { 0, 1, 2, 3, 4, 5, 6, 7, 8 };
@@ -29,24 +15,17 @@ public class MatrixF4x4 {
 
     private boolean colMaj = true;
 
-    /** The matrix. */
+
     public float[] matrix;
 
-    /**
-     * Instantiates a new matrixf4x4. The Matrix is assumed to be Column major, however you can change this by using the
-     * setColumnMajor function to false and it will operate like a row major matrix.
-     */
+
     public MatrixF4x4() {
         // The matrix is defined as float[column][row]
         this.matrix = new float[16];
         Matrix.setIdentityM(this.matrix, 0);
     }
 
-    /**
-     * Gets the matrix.
-     *
-     * @return the matrix, can be null if the matrix is invalid
-     */
+
     public float[] getMatrix() {
         return this.matrix;
     }
@@ -55,12 +34,7 @@ public class MatrixF4x4 {
         return matrix.length;
     }
 
-    /**
-     * Sets the matrix from a float[16] array. If the matrix you set isn't 16 long then the matrix will be set as
-     * invalid.
-     *
-     * @param matrix the new matrix
-     */
+
     public void setMatrix(float[] matrix) {
         if (matrix.length == 16 || matrix.length == 9)
             this.matrix = matrix;
@@ -73,31 +47,17 @@ public class MatrixF4x4 {
         System.arraycopy(source.matrix, 0, matrix, 0, matrix.length);
     }
 
-    /**
-     * Set whether the internal data is col major by passing true, or false for a row major matrix. The matrix is column
-     * major by default.
-     *
-     * @param colMajor
-     */
+
     public void setColumnMajor(boolean colMajor) {
         this.colMaj = colMajor;
     }
 
-    /**
-     * Find out if the stored matrix is column major
-     *
-     * @return
-     */
+
     public boolean isColumnMajor() {
         return colMaj;
     }
 
-    /**
-     * Multiply the given vector by this matrix. This should only be used if the matrix is of size 16 (use the
-     * matrix.size() method).
-     *
-     * @param vector A vector of length 4.
-     */
+
     public void multiplyVector4fByMatrix(Vector4f vector) {
 
         if (matrix.length == 16) {
@@ -136,12 +96,7 @@ public class MatrixF4x4 {
             Log.e("matrix", "Matrix is invalid, is " + matrix.length + " long, this equation expects a 16 value matrix");
     }
 
-    /**
-     * Multiply the given vector by this matrix. This should only be used if the matrix is of size 9 (use the
-     * matrix.size() method).
-     *
-     * @param vector A vector of length 3.
-     */
+
     public void multiplyVector3fByMatrix(Vector3f vector) {
 
         if (matrix.length == 9) {
@@ -177,24 +132,14 @@ public class MatrixF4x4 {
                     + " long, this function expects the internal matrix to be of size 9");
     }
 
-    /**
-     * Multiply matrix4x4 by matrix.
-     *
-     * @param matrixf the matrixf
-     */
+
     public void multiplyMatrix4x4ByMatrix(MatrixF4x4 matrixf) {
 
         // TODO implement Strassen Algorithm in place of this slower naive one.
         float[] bufferMatrix = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
         float[] matrix = matrixf.getMatrix();
 
-        /**
-         * for(int i = 0; i < 4; i++){ for(int j = 0; j < 4; j++){
-         *
-         * int k = i * 4; bufferMatrix[0 + j] += this.matrix[k + j] * matrix[0 * 4 + i]; bufferMatrix[1 * 4 + j] +=
-         * this.matrix[k + j] * matrix[1 * 4 + i]; bufferMatrix[2 * 4 + j] += this.matrix[k + j] * matrix[2 * 4 +
-         * i]; bufferMatrix[3 * 4 + j] += this.matrix[k + j] * matrix[3 * 4 + i]; } }
-         */
+
 
         multiplyMatrix(matrix, 0, bufferMatrix, 0);
         matrixf.setMatrix(bufferMatrix);
@@ -216,9 +161,7 @@ public class MatrixF4x4 {
         }
     }
 
-    /**
-     * This will rearrange the internal structure of the matrix. Be careful though as this is an expensive operation.
-     */
+
     public void transpose() {
         if (this.matrix.length == 16) {
             float[] newMatrix = new float[16];

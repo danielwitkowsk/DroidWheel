@@ -1,65 +1,13 @@
 package org.idk.droid_wheel.representation;
 
-/**
- * Matrix math utilities. These methods operate on OpenGL ES format
- * matrices and vectors stored in float arrays.
- * 
- * Matrices are 4 x 4 column-vector matrices stored in column-major
- * order:
- * 
- * <pre>
- *  m[offset +  0] m[offset +  4] m[offset +  8] m[offset + 12]
- *  m[offset +  1] m[offset +  5] m[offset +  9] m[offset + 13]
- *  m[offset +  2] m[offset +  6] m[offset + 10] m[offset + 14]
- *  m[offset +  3] m[offset +  7] m[offset + 11] m[offset + 15]
- * </pre>
- * 
- * Vectors are 4 row x 1 column column-vectors stored in order:
- * 
- * <pre>
- * v[offset + 0]
- * v[offset + 1]
- * v[offset + 2]
- * v[offset + 3]
- * </pre>
- * 
- */
+
 public class Matrix {
 
-    /**
-     * Temporary memory for operations that need temporary matrix data.
-     */
+
     private static final float[] TEMP_MATRIX_ARRAY = new float[32];
 
-    /**
-     * Multiply two 4x4 matrices together and store the result in a third 4x4
-     * matrix. In matrix notation: result = lhs x rhs. Due to the way
-     * matrix multiplication works, the result matrix will have the same
-     * effect as first multiplying by the rhs matrix, then multiplying by
-     * the lhs matrix. This is the opposite of what you might expect.
-     * 
-     * The same float array may be passed for result, lhs, and/or rhs. However,
-     * the result element values are undefined if the result elements overlap
-     * either the lhs or rhs elements.
-     * 
-     * @param result The float array that holds the result.
-     * @param resultOffset The offset into the result array where the result is
-     *            stored.
-     * @param lhs The float array that holds the left-hand-side matrix.
-     * @param lhsOffset The offset into the lhs array where the lhs is stored
-     * @param rhs The float array that holds the right-hand-side matrix.
-     * @param rhsOffset The offset into the rhs array where the rhs is stored.
-     * 
-     * @throws IllegalArgumentException if result, lhs, or rhs are null, or if
-     *             resultOffset + 16 > result.length or lhsOffset + 16 > lhs.length or
-     *             rhsOffset + 16 > rhs.length.
-     */
-    /**
-     * public static void multiplyMM(float[] result, int resultOffset,
-     * float[] lhs, int lhsOffset, float[] rhs, int rhsOffset){
-     * android.opengl.Matrix.multiplyMM(result, resultOffset, lhs, lhsOffset, rhs, rhsOffset);
-     * }
-     */
+
+
 
     public static void multiplyMM(float[] output, int outputOffset, float[] lhs, int lhsOffset, float[] rhs,
             int rhsOffset) {
@@ -549,22 +497,7 @@ public class Matrix {
         rm[rmOffset + 15] = 1.0f;
     }
 
-    /**
-     * Define a viewing transformation in terms of an eye point, a center of
-     * view, and an up vector.
-     * 
-     * @param rm returns the result
-     * @param rmOffset index into rm where the result matrix starts
-     * @param eyeX eye point X
-     * @param eyeY eye point Y
-     * @param eyeZ eye point Z
-     * @param centerX center of view X
-     * @param centerY center of view Y
-     * @param centerZ center of view Z
-     * @param upX up vector X
-     * @param upY up vector Y
-     * @param upZ up vector Z
-     */
+
     public static void setLookAtM(float[] rm, int rmOffset, float eyeX, float eyeY, float eyeZ, float centerX,
             float centerY, float centerZ, float upX, float upY, float upZ) {
 

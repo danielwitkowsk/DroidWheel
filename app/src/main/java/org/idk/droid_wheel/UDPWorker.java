@@ -2,6 +2,7 @@ package org.idk.droid_wheel;
 
 
 import java.net.*;
+import java.nio.charset.StandardCharsets;
 
 public class UDPWorker {
     InetAddress local = null;
@@ -29,6 +30,15 @@ public class UDPWorker {
         server_port = port;
     }
 
+    public void pre_send(float[] values) {
+        float[] test=new float[3];
+        double degree=(values[0]+Math.PI)*(360/(2*Math.PI));
+        degree = (degree + postStart.offset)%360;
+        if (degree < 0) degree = 360 +degree;
+        postStart.img.setRotation(-(float)degree);
+        byte[] mess = (String.valueOf((int)degree)).getBytes(StandardCharsets.UTF_8);
+        send(mess);
+    }
     public void send(final byte[] mess) {
         new Thread(){
             @Override

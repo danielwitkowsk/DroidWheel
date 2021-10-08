@@ -1,60 +1,45 @@
 package org.idk.droid_wheel.orientationProvider;
+/*
+Copyright (c) 2012-2021 Scott Chacon and others
 
+Permission is hereby granted, free of charge, to any person obtaining
+a copy of this software and associated documentation files (the
+"Software"), to deal in the Software without restriction, including
+without limitation the rights to use, copy, modify, merge, publish,
+distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to
+the following conditions:
+
+The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorManager;
-
 import org.idk.droid_wheel.MainActivity;
-
-import java.nio.charset.StandardCharsets;
-
-/**
- * The orientation provider that delivers the current orientation from the {@link Sensor#TYPE_ROTATION_VECTOR Android
- * Rotation Vector sensor}.
- * 
- * @author Alexander Pacha
- * 
- */
 public class RotationVectorProvider extends OrientationProvider {
-
-    /**
-     * Temporary quaternion to store the values obtained from the SensorManager
-     */
     final private float[] temporaryQuaternion = new float[4];
-
-    /**
-     * Initialises a new RotationVectorProvider
-     * 
-     * @param sensorManager The android sensor manager
-     */
     public RotationVectorProvider(SensorManager sensorManager) {
         super(sensorManager);
-
-        //The rotation vector sensor that is being used for this provider to get device orientation
         sensorList.add(sensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR));
     }
-
     @Override
     public void onSensorChanged(SensorEvent event) {
-        // we received a sensor event. it is a good practice to check
-        // that we received the proper event
         if (event.sensor.getType() == Sensor.TYPE_ROTATION_VECTOR) {
-            // convert the rotation-vector to a 4x4 matrix. the matrix
-            // is interpreted by Open GL as the inverse of the
-            // rotation-vector, which is what we want.
             SensorManager.getRotationMatrixFromVector(currentOrientationRotationMatrix.matrix, event.values);
-
-            // Get Quaternion
-            // Calculate angle. Starting with API_18, Android will provide this value as event.values[3], but if not, we have to calculate it manually.
             SensorManager.getQuaternionFromVector(temporaryQuaternion, event.values);
             currentOrientationQuaternion.setXYZW(temporaryQuaternion[1], temporaryQuaternion[2], temporaryQuaternion[3], -temporaryQuaternion[0]);
         }
-        getEulerAngles(MainActivity.test);
-        MainActivity.degree=(MainActivity.test[0]+Math.PI)*(360/(2*Math.PI));
-        MainActivity.degree = (MainActivity.degree + MainActivity.offset)%360;
-        if (MainActivity.degree < 0) MainActivity.degree = 360 +MainActivity.degree;
-        MainActivity.img.setRotation(-(float)MainActivity.degree);
-        byte[] mess = (String.valueOf((int)MainActivity.degree)).getBytes(StandardCharsets.UTF_8);
-        MainActivity.client.send(mess);
+        float[] values=new float[3];
+        getEulerAngles(values);
+        MainActivity.client.pre_send(values);
     }
 }
