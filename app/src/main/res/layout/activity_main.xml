@@ -22,7 +22,8 @@
         android:layout_marginHorizontal="20sp"
         android:digits="0123456789."
         android:hint="IP address"
-        android:inputType="number">
+        android:inputType="number"
+        android:autofillHints="">
     </EditText>
 
     <TextView

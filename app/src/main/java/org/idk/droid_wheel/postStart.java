@@ -109,6 +109,9 @@ public class postStart extends  MainActivity{
             }
         });
     }
-
+    @Override
+    public void onBackPressed() {
+        moveTaskToBack(true);
+    }
 
 }

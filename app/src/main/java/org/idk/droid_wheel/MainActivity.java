@@ -1,29 +1,26 @@
 package org.idk.droid_wheel;
+import android.content.Context;
 import android.content.Intent;
-import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.app.Activity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import org.idk.droid_wheel.orientationProvider.AccelerometerCompassProvider;
-import org.idk.droid_wheel.orientationProvider.GravityCompassProvider;
-import org.idk.droid_wheel.orientationProvider.ImprovedOrientationSensor1Provider;
-import org.idk.droid_wheel.orientationProvider.RotationVectorProvider;
-import org.idk.droid_wheel.orientationProvider.CalibratedGyroscopeProvider;
-import org.idk.droid_wheel.orientationProvider.OrientationProvider;
-import org.idk.droid_wheel.orientationProvider.ImprovedOrientationSensor2Provider;
-import android.view.MenuItem;
-import android.widget.PopupMenu;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
 public class MainActivity extends Activity {
     public static UDPWorker client = new UDPWorker();
 
     protected void onCreate(Bundle savedInstanceState) {
+
         //getActionBar().hide();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -32,6 +29,19 @@ public class MainActivity extends Activity {
         final EditText port = (EditText)this.findViewById(R.id.port);
         final Button submit = (Button)this.findViewById(R.id.submit);
 
+        /*boolean isFilePresent = isFilePresent(this, "storage.txt");
+        if(isFilePresent) {
+            String contentString = read(this, "storage.txt");
+            ip.setText(contentString);
+        } else {
+            boolean isFileCreated = create(this, "storage.txt", "{}");
+            if(isFileCreated) {
+
+            } else {
+
+            }
+        }
+        */
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -50,6 +60,45 @@ public class MainActivity extends Activity {
 
     }
 
+    private String read(Context context, String fileName) {
+        try {
+            FileInputStream fis = context.openFileInput(fileName);
+            InputStreamReader isr = new InputStreamReader(fis);
+            BufferedReader bufferedReader = new BufferedReader(isr);
+            StringBuilder sb = new StringBuilder();
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                sb.append(line);
+            }
+            return sb.toString();
+        } catch (FileNotFoundException fileNotFound) {
+            return null;
+        } catch (IOException ioException) {
+            return null;
+        }
+    }
 
+    private boolean create(Context context, String fileName, String txtString){
+        String FILENAME = "storage.txt";
+        try {
+            FileOutputStream fos = context.openFileOutput(fileName,Context.MODE_PRIVATE);
+            if (txtString != null) {
+                fos.write(txtString.getBytes());
+            }
+            fos.close();
+            return true;
+        } catch (FileNotFoundException fileNotFound) {
+            return false;
+        } catch (IOException ioException) {
+            return false;
+        }
+
+    }
+
+    public boolean isFilePresent(Context context, String fileName) {
+        String path = context.getFilesDir().getAbsolutePath() + "/" + fileName;
+        File file = new File(path);
+        return file.exists();
+    }
 
 }

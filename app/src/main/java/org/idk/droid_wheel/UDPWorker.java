@@ -35,7 +35,7 @@ public class UDPWorker {
         double degree=(values[0]+Math.PI)*(360/(2*Math.PI));
         degree = (degree + postStart.offset)%360;
         if (degree < 0) degree = 360 +degree;
-        postStart.img.setRotation(-(float)degree);
+        postStart.img.setRotation(-(float)degree+90);
         byte[] mess = (String.valueOf((int)degree)).getBytes(StandardCharsets.UTF_8);
         send(mess);
     }
