@@ -23,6 +23,10 @@
             android:label="DroidWheel">
 
         </activity>
+        <activity android:name="org.idk.droid_wheel.Settings_activity"
+            android:theme="@style/AppTheme.CustomTheme"
+            >
+        </activity>
 </application>
 
 </manifest>

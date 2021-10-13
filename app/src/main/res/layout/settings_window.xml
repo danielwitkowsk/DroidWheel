@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/custom_border"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/toggle_darkmode_btn"
+                android:layout_width="79dp"
+                android:layout_height="60dp"
+                android:background="@drawable/toggle_darkmode_icon"
+                android:clickable="true" />
+
+            <TextView
+                android:id="@+id/toggle_darkmode_txt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Toggle darkmode"
+                android:textAlignment="center" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/choose_sensor_btn"
+                android:layout_width="79dp"
+                android:layout_height="60dp"
+                android:background="@drawable/choose_sensor_icon"
+                android:clickable="true" />
+
+            <TextView
+                android:id="@+id/choose_sensor_txt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Choose sensor"
+                android:textAlignment="center" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/enter_gamemode_btn"
+                android:layout_width="79dp"
+                android:layout_height="60dp"
+                android:background="@drawable/enter_gamemode_icon"
+                android:clickable="true" />
+
+            <TextView
+                android:id="@+id/enter_gamemode_txt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Enter Gamemode"
+                android:textAlignment="center" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/enter_editmode_btn"
+                android:layout_width="79dp"
+                android:layout_height="60dp"
+                android:background="@drawable/enter_editmode_icon"
+                android:clickable="true" />
+
+            <TextView
+                android:id="@+id/enter_editmode_txt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Enter Editmode"
+                android:textAlignment="center" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

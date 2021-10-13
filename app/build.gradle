@@ -10,11 +10,12 @@ android {
 
     defaultConfig {
         applicationId "org.idk.droid_wheel"
-        minSdkVersion 19
+        minSdkVersion 29
         targetSdkVersion 29
         versionCode code + buildNumber
         versionName "1.5." + buildNumber
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        vectorDrawables.useSupportLibrary = true
     }
 
     buildTypes {
